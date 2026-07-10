@@ -1,0 +1,62 @@
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ── Tailwind directives ── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base layer overrides ── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-poppins bg-white text-text-dark antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  a {
+    @apply no-underline;
+  }
+
+  img {
+    @apply max-w-full h-auto block;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+}
+
+/* ── Utility layer additions ── */
+@layer utilities {
+  /* Gold text gradient helper */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #C8A96E 0%, #e8c98e 50%, #C8A96E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Subtle gold shimmer on hover */
+  .hover-gold:hover {
+    @apply text-accent transition-colors duration-300;
+  }
+}
