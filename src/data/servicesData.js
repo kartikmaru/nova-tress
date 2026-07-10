@@ -56,14 +56,14 @@ export const SERVICES = [
     id:       6,
     title:    "Waxing",
     desc:     "Achieve silky-smooth skin with our gentle yet effective waxing services — safe, hygienic and long-lasting results.",
-    img:      "/images/services/services(6).jpg",
+    img:      "/images/services/services.jpg",
     fallback: "Waxing",
   },
   {
     id:       7,
     title:    "Hair Coloring",
     desc:     "From subtle highlights to bold transformations, our colour specialists create vibrant, healthy and stunning results.",
-    img:      "/images/services/services(7).jpg",
+    img:      "/images/services/services(6).jpg",
     fallback: "Hair Coloring",
   },
   {
@@ -77,7 +77,7 @@ export const SERVICES = [
     id:       9,
     title:    "Nail Art",
     desc:     "Express yourself with stunning nail art. Our artists create everything from minimalist designs to intricate masterpieces.",
-    img:      "/images/services/services.jpg",
+    img:      "/images/services/services(7).jpg",
     fallback: "Nail Art",
   },
 ];
