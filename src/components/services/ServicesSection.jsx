@@ -132,8 +132,8 @@ function ServiceCard({ service }) {
           {service.desc}
         </p>
 
-        {/* Book Now — opens booking modal */}
-        <BookNowButton variant="service" className="
+        {/* Book Now — opens booking modal with this service pre-selected */}
+        <BookNowButton variant="service" service={service.title} className="
           mt-2 block w-full py-2.5 rounded-xl text-center
           font-poppins text-sm font-semibold uppercase tracking-widest
           bg-[#222222] text-white border-2 border-[#222222]

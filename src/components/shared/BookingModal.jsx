@@ -23,13 +23,20 @@ const INITIAL_FORM = {
 };
 
 export default function BookingModal() {
-  const { isOpen, closeBookingModal } = useBooking();
+  const { isOpen, closeBookingModal, preSelectedService } = useBooking();
 
   const [form,    setForm]    = useState(INITIAL_FORM);
   const [errors,  setErrors]  = useState({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
+
+  /* ── Pre-select service when modal opens with a service name ── */
+  useEffect(() => {
+    if (isOpen && preSelectedService) {
+      setForm((prev) => ({ ...prev, service: preSelectedService }));
+    }
+  }, [isOpen, preSelectedService]);
 
   /* ── Body scroll lock ── */
   useEffect(() => {

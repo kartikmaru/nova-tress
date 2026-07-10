@@ -49,6 +49,7 @@ export default function BookNowButton({
   children = "Book Now",
   className,
   variant  = "dark",
+  service  = "",        /* pass service name to pre-select in booking form */
   ...rest
 }) {
   const { openBookingModal } = useBooking();
@@ -56,7 +57,7 @@ export default function BookNowButton({
   return (
     <button
       type="button"
-      onClick={openBookingModal}
+      onClick={() => openBookingModal(service)}
       className={className ?? VARIANTS[variant] ?? VARIANTS.dark}
       {...rest}
     >
