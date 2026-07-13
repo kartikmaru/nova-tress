@@ -21,12 +21,17 @@ function FAQItem({ faq, index, openIdx, setOpenIdx }) {
       <button
         onClick={toggle}
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-3 px-5 py-4
-                   cursor-pointer text-left select-none transition-colors duration-200"
+        className="
+          btn-base btn-press
+          w-full flex items-center justify-between gap-3 px-5 py-4
+          cursor-pointer text-left select-none
+          hover:bg-[rgba(200,169,110,0.04)]
+          transition-all duration-200
+        "
         style={{
           background: isOpen
             ? "linear-gradient(135deg,rgba(200,169,110,0.06) 0%,transparent 100%)"
-            : "transparent",
+            : undefined,
         }}
       >
         {/*

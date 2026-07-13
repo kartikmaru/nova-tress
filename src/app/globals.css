@@ -59,4 +59,26 @@
   .hover-gold:hover {
     @apply text-accent transition-colors duration-300;
   }
+
+  /* Hide scrollbar — used for horizontal swipe strips on mobile */
+  .scrollbar-none {
+    -ms-overflow-style: none;   /* IE / Edge */
+    scrollbar-width: none;      /* Firefox */
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;              /* Chrome / Safari / Opera */
+  }
+
+  /* ── Shared button base: tap highlight removed, cursor, focus ring ── */
+  .btn-base {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    outline-offset: 2px;
+    user-select: none;
+  }
+
+  /* active press-down feedback for all interactive buttons on touch */
+  .btn-press {
+    @apply active:scale-[0.96] active:brightness-90 transition-all duration-150;
+  }
 }

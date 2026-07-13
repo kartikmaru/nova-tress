@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
+import MobileCarousel from "@/components/shared/MobileCarousel";
 
 /* ── Animated counter hook ─────────────────────────────────────── */
 function useCounter(target, duration = 2200) {
@@ -43,7 +44,7 @@ function useCounter(target, duration = 2200) {
   return { count, ref };
 }
 
-/* ── Stat card — own hook, no map violation ─────────────────────── */
+/* ── StatCard — single reusable card ───────────────────────────── */
 function StatCard({ target, suffix, label, icon, desc, accent = false }) {
   const { count, ref } = useCounter(target);
 
@@ -51,32 +52,35 @@ function StatCard({ target, suffix, label, icon, desc, accent = false }) {
     <div
       ref={ref}
       className={`
-        group relative bg-white rounded-2xl border p-8 text-center
+        group relative bg-white rounded-2xl border text-center
+        p-6 sm:p-8
         hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden
         ${accent ? "border-[#C8A96E]" : "border-[#E0E0E0] hover:border-[#C8A96E]"}
       `}
     >
-      {/* Subtle top colour bar on hover */}
+      {/* Top colour bar on hover */}
       <div className="absolute top-0 inset-x-0 h-1 bg-[#C8A96E] scale-x-0
                       group-hover:scale-x-100 transition-transform duration-400 origin-left rounded-t-2xl" />
 
       {/* Icon box */}
-      <div className="w-14 h-14 bg-[#222222] rounded-xl flex items-center justify-center
-                      text-2xl mb-5 mx-auto group-hover:bg-[#C8A96E] transition-colors duration-300">
+      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#222222] rounded-xl flex items-center justify-center
+                      text-xl sm:text-2xl mb-4 sm:mb-5 mx-auto
+                      group-hover:bg-[#C8A96E] transition-colors duration-300">
         <span role="img" aria-label={label}>{icon}</span>
       </div>
 
       {/* Animated number */}
-      <p className="font-playfair font-bold text-5xl text-[#C8A96E] mb-1 leading-none">
+      <p className="font-playfair font-bold text-4xl sm:text-5xl text-[#C8A96E] mb-1 leading-none">
         {count}<span>{suffix}</span>
       </p>
 
       {/* Label */}
-      <p className="font-poppins font-semibold text-sm text-[#222222] mt-2 mb-3 uppercase tracking-wide">
+      <p className="font-poppins font-semibold text-xs sm:text-sm text-[#222222]
+                    mt-2 mb-3 uppercase tracking-wide">
         {label}
       </p>
 
-      {/* Description */}
+      {/* Description — visible on all sizes */}
       <p className="font-poppins text-xs text-[#888888] leading-relaxed">
         {desc}
       </p>
@@ -118,11 +122,11 @@ export default function AboutFacts() {
   ];
 
   return (
-    <section className="py-24 px-6 lg:px-20" style={{ backgroundColor: "#F5F5F5" }}>
+    <section className="py-20 sm:py-24 px-6 lg:px-20" style={{ backgroundColor: "#F5F5F5" }}>
       <div className="max-w-[1200px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end mb-10 sm:mb-14">
           <div>
             <p className="font-poppins text-[11px] font-semibold tracking-[0.35em] uppercase
                           text-[#888888] mb-4">
@@ -138,8 +142,25 @@ export default function AboutFacts() {
           </p>
         </div>
 
-        {/* ── 4 stat cards: 2×2 on sm+, stacked on mobile ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* ── Mobile: single-card carousel with dots ── */}
+        <div className="sm:hidden">
+          <MobileCarousel
+            items={stats}
+            dotDark={true}
+            renderItem={(s) => (
+              <StatCard
+                target={s.target}
+                suffix={s.suffix}
+                label={s.label}
+                icon={s.icon}
+                desc={s.desc}
+              />
+            )}
+          />
+        </div>
+
+        {/* ── Desktop: 4-col grid (unchanged) ── */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((s) => (
             <StatCard
               key={s.label}

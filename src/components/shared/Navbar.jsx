@@ -105,7 +105,12 @@ export default function Navbar() {
             onClick={() => setMenuOpen((p) => !p)}
             aria-label="Toggle navigation"
             aria-expanded={menuOpen}
-            className="lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-[6px] flex-shrink-0"
+            className="
+              btn-base btn-press
+              lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-[6px] flex-shrink-0
+              rounded-lg hover:bg-white/10 active:bg-white/20
+              transition-all duration-200
+            "
           >
             {/* Bar 1 */}
             <span
@@ -173,10 +178,12 @@ export default function Navbar() {
           <li className="mt-3 pt-3 border-t border-white/10">
             <BookNowButton
               className="
+                btn-base btn-press
                 block w-full text-center py-3 px-4 rounded
                 font-poppins text-sm font-semibold uppercase tracking-widest
                 bg-accent text-primary-dark
                 hover:bg-white hover:text-primary-dark
+                hover:shadow-[0_4px_16px_rgba(200,169,110,0.30)]
                 transition-all duration-300
               "
               onClick={() => setMenuOpen(false)}

@@ -161,9 +161,11 @@ export default function BookingModal() {
             onClick={handleClose}
             aria-label="Close booking modal"
             className="
+              btn-base btn-press
               w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0
               bg-[#F5F5F5] text-[#888888]
-              hover:bg-[#222222] hover:text-white
+              hover:bg-[#222222] hover:text-white hover:scale-105
+              active:scale-90
               transition-all duration-200
             "
           >
@@ -300,11 +302,15 @@ export default function BookingModal() {
                 type="submit"
                 disabled={loading}
                 className="
+                  btn-base btn-press
                   mt-2 w-full py-3.5 rounded-xl
                   font-poppins text-sm font-semibold uppercase tracking-widest
                   bg-[#222222] text-white border-2 border-[#222222]
                   hover:bg-transparent hover:text-[#C8A96E] hover:border-[#C8A96E]
-                  disabled:opacity-60 disabled:cursor-not-allowed
+                  hover:shadow-[0_4px_20px_rgba(200,169,110,0.25)]
+                  disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#222222]
+                  disabled:hover:text-white disabled:hover:border-[#222222]
+                  disabled:hover:shadow-none disabled:active:scale-100
                   transition-all duration-300
                   flex items-center justify-center gap-2
                 "

@@ -100,13 +100,13 @@ export default function AboutNovaTress() {
           />
 
           {/* "Since" badge — overlaid top-right corner, above shine (z-20) */}
-          <div className="absolute top-4 right-2 z-20
-            bg-primary-dark rounded-2xl px-5 py-4 text-center shadow-xl">
-            <p className="font-poppins text-[10px] uppercase tracking-widest
+          <div className="absolute top-4 right-2 sm:right-2 -right-1 z-20
+            bg-primary-dark rounded-2xl px-3 sm:px-5 py-3 sm:py-4 text-center shadow-xl">
+            <p className="font-poppins text-[9px] sm:text-[10px] uppercase tracking-widest
               text-white/50 mb-1">
               Since
             </p>
-            <p className="font-playfair font-bold text-3xl text-white leading-none">
+            <p className="font-playfair font-bold text-2xl sm:text-3xl text-white leading-none">
               2015
             </p>
           </div>
@@ -165,7 +165,8 @@ export default function AboutNovaTress() {
               href="/about"
               className="inline-block font-poppins text-sm font-semibold uppercase
                 tracking-widest px-8 py-3 rounded border border-text-dark text-text-dark
-                hover:border-accent hover:text-accent transition-all duration-300"
+                hover:border-accent hover:text-accent hover:bg-accent/5 hover:shadow-md hover:-translate-y-0.5
+                active:scale-95 transition-all duration-300"
             >
               Read More
             </Link>

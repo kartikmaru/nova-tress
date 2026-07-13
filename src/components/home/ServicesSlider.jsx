@@ -21,7 +21,7 @@ function ServiceCard({ service }) {
     <div
       className="
         group relative flex-shrink-0
-        w-[220px] sm:w-[250px] h-[340px] sm:h-[390px]
+        w-[170px] sm:w-[220px] md:w-[250px] h-[260px] sm:h-[340px] md:h-[390px]
         rounded-2xl overflow-hidden cursor-default select-none
       "
       aria-label={service.title}

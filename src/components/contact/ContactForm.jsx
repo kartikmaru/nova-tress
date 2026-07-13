@@ -181,9 +181,14 @@ export default function ContactForm() {
                    style={{ backgroundColor: "#C8A96E" }} />
               <button
                 onClick={() => setSuccess(false)}
-                className="font-poppins text-sm font-semibold uppercase tracking-widest
-                           px-6 py-2.5 rounded-xl border-2 border-[#222222] text-[#222222]
-                           hover:border-[#C8A96E] hover:text-[#C8A96E] transition-all duration-300"
+                className="
+                  btn-base btn-press
+                  font-poppins text-sm font-semibold uppercase tracking-widest
+                  px-6 py-2.5 rounded-xl border-2 border-[#222222] text-[#222222]
+                  hover:border-[#C8A96E] hover:text-[#C8A96E]
+                  hover:shadow-[0_4px_14px_rgba(200,169,110,0.20)]
+                  transition-all duration-300
+                "
               >
                 Send Another
               </button>
@@ -263,11 +268,15 @@ export default function ContactForm() {
                 type="submit"
                 disabled={loading}
                 className="
+                  btn-base btn-press
                   w-full py-3.5 rounded-xl
                   font-poppins text-sm font-semibold uppercase tracking-widest
                   bg-[#222222] text-white border-2 border-[#222222]
                   hover:bg-transparent hover:text-[#C8A96E] hover:border-[#C8A96E]
-                  disabled:opacity-60 disabled:cursor-not-allowed
+                  hover:shadow-[0_4px_20px_rgba(200,169,110,0.25)]
+                  disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#222222]
+                  disabled:hover:text-white disabled:hover:border-[#222222]
+                  disabled:hover:shadow-none disabled:active:scale-100
                   transition-all duration-300
                   flex items-center justify-center gap-2
                 "

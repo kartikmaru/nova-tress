@@ -123,10 +123,12 @@ export default function MapSearch() {
           <button
             onClick={handleSearch}
             className="
+              btn-base btn-press
               px-6 py-3 rounded-xl
               font-poppins text-sm font-semibold uppercase tracking-widest
               bg-[#222222] text-white border-2 border-[#222222]
               hover:bg-transparent hover:text-[#C8A96E] hover:border-[#C8A96E]
+              hover:shadow-[0_4px_18px_rgba(200,169,110,0.25)]
               transition-all duration-300 flex-shrink-0
               flex items-center gap-2
             "
@@ -145,11 +147,15 @@ export default function MapSearch() {
             disabled={geoLoading}
             title="Use my current location"
             className="
+              btn-base btn-press
               px-4 py-3 rounded-xl
               font-poppins text-sm font-semibold uppercase tracking-widest
               border-2 border-[#C8A96E] text-[#C8A96E]
               hover:bg-[#C8A96E] hover:text-[#222222]
+              hover:shadow-[0_4px_18px_rgba(200,169,110,0.30)]
               disabled:opacity-50 disabled:cursor-not-allowed
+              disabled:hover:bg-transparent disabled:hover:text-[#C8A96E]
+              disabled:hover:shadow-none disabled:active:scale-100
               transition-all duration-300 flex-shrink-0
               flex items-center gap-2
             "

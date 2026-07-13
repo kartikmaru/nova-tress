@@ -133,33 +133,43 @@ export default function GallerySection() {
       <section className="bg-white py-14 px-6 lg:px-20">
         <div className="max-w-[1400px] mx-auto">
 
-          {/* ── Mobile stacked (< sm) ── */}
-          <div className="flex flex-col gap-4 sm:hidden">
-            {IMAGES.map((image, idx) => {
-              const p = PATTERN[idx % PATTERN.length];
-              return (
+          {/* ── Mobile: clean uniform 2-col grid (< sm) ── */}
+          <div className="sm:hidden grid grid-cols-2 gap-3">
+            {IMAGES.map((image) => (
+              <div
+                key={image.id}
+                className="group relative overflow-hidden rounded-xl shadow-sm
+                           cursor-pointer h-[180px]"
+              >
+                <SafeImage
+                  src={image.src}
+                  alt={image.alt}
+                  containerClassName="absolute inset-0 w-full h-full"
+                  imageClassName="w-full h-full object-cover
+                    grayscale group-hover:grayscale-0
+                    scale-100 group-hover:scale-110
+                    transition-all duration-700 ease-out"
+                  fallbackText={image.fallback}
+                />
                 <div
-                  key={image.id}
-                  className={`group relative overflow-hidden rounded-2xl shadow-md
-                              transition-shadow duration-400 cursor-pointer ${p.h}`}
+                  aria-hidden="true"
+                  className="absolute inset-0 z-10 pointer-events-none
+                             opacity-0 group-hover:opacity-100 group-hover:animate-shine"
+                  style={{ background: "linear-gradient(105deg,transparent 25%,rgba(255,255,255,0.42) 50%,transparent 75%)" }}
+                />
+                {/* Caption */}
+                <div
+                  className="absolute inset-x-0 bottom-0 z-20 px-2 py-1.5
+                             translate-y-full group-hover:translate-y-0
+                             transition-transform duration-400 ease-out"
+                  style={{ background: "linear-gradient(to top,rgba(34,34,34,0.82) 0%,transparent 100%)" }}
                 >
-                  <SafeImage
-                    src={image.src} alt={image.alt}
-                    containerClassName="absolute inset-0 w-full h-full"
-                    imageClassName="w-full h-full object-cover
-                      grayscale group-hover:grayscale-0
-                      scale-100 group-hover:scale-110
-                      transition-all duration-700 ease-out"
-                    fallbackText={image.fallback}
-                  />
-                  <div aria-hidden="true" className="
-                    absolute inset-0 z-10 pointer-events-none
-                    opacity-0 group-hover:opacity-100 group-hover:animate-shine"
-                    style={{ background: "linear-gradient(105deg,transparent 25%,rgba(255,255,255,0.42) 50%,transparent 75%)" }}
-                  />
+                  <p className="font-poppins text-[10px] uppercase tracking-widest text-white/80 truncate">
+                    {image.alt}
+                  </p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           {/* ── Tablet 2-col (sm – md) ── */}

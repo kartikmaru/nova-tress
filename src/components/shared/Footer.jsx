@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 const QUICK_LINKS = [
@@ -12,12 +13,54 @@ const QUICK_LINKS = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <footer className="bg-primary-dark border-t border-secondary-dark">
-      {/* ── Main 3-column grid ── */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14 grid grid-cols-1 md:grid-cols-3 gap-10">
 
+      {/* ── Mobile toggle button — only visible on mobile ── */}
+      <div className="md:hidden flex items-center justify-between px-6 py-4 border-b border-secondary-dark">
+        <span className="font-playfair font-bold text-lg text-white">
+          <span className="text-accent">✦</span> NovaTress
+        </span>
+        <button
+          onClick={() => setMobileOpen((o) => !o)}
+          aria-label={mobileOpen ? "Close footer" : "Open footer"}
+          aria-expanded={mobileOpen}
+          className="
+            btn-base btn-press
+            w-9 h-9 flex items-center justify-center rounded-full
+            border border-secondary-dark text-text-light
+            hover:border-accent hover:text-accent hover:bg-accent/10
+            hover:shadow-[0_2px_10px_rgba(200,169,110,0.20)]
+            transition-all duration-300
+          "
+        >
+          {mobileOpen ? (
+            /* × close icon */
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          ) : (
+            /* + open icon */
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14"/>
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* ── Main 3-column grid ──
+          Mobile: hidden by default, revealed when mobileOpen = true
+          Desktop (md+): always visible, standard 3-col layout          ── */}
+      <div
+        className={`
+          max-w-[1400px] mx-auto px-6 lg:px-12 py-14
+          grid grid-cols-1 md:grid-cols-3 gap-10
+          md:!grid
+          ${mobileOpen ? "grid" : "hidden"}
+        `}
+      >
         {/* Column 1 — Brand */}
         <div className="flex flex-col gap-4">
           <Link
@@ -107,7 +150,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Bottom bar ── */}
+      {/* ── Bottom bar — always visible ── */}
       <div className="border-t border-secondary-dark">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-poppins text-xs text-text-light">

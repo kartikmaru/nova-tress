@@ -4,18 +4,17 @@
  * OurProfessionals.jsx
  * Staff cards: grayscale image default → colour + shine on hover.
  * Card lifts with shadow on hover.
+ * Mobile: auto-sliding carousel with swipe/drag gesture support.
+ * Desktop (sm+): regular 3-column grid.
  */
 
+import { useEffect, useRef, useState, useCallback } from "react";
 import SafeImage from "@/components/shared/SafeImage";
 import { STAFF } from "@/data/professionalsData";
 
 /* ─── Single staff card ─────────────────────────────────────────── */
 function StaffCard({ person }) {
   return (
-    /*
-      group on the outer card enables all group-hover: variants inside.
-      overflow-hidden on the photo wrapper clips the shine to the photo area.
-    */
     <div
       className="
         group flex flex-col bg-white rounded-2xl overflow-hidden
@@ -25,7 +24,7 @@ function StaffCard({ person }) {
         transition-all duration-400
       "
     >
-      {/* ── Photo area — 3:4 aspect ── */}
+      {/* ── Photo area — 3:4 aspect desktop / shorter on mobile ── */}
       <div
         className="relative w-full flex-shrink-0 overflow-hidden bg-secondary-dark"
         style={{ aspectRatio: "3/4" }}
@@ -44,9 +43,7 @@ function StaffCard({ person }) {
           fallbackText={person.fallback}
         />
 
-        {/* ── Mirror shine overlay ──
-            Sweeps once across the photo when the card is hovered.
-            z-10 → above image, below role pill (z-20).               */}
+        {/* ── Mirror shine overlay ── */}
         <div
           aria-hidden="true"
           className="
@@ -60,7 +57,7 @@ function StaffCard({ person }) {
           }}
         />
 
-        {/* Role pill — pinned to photo bottom, z-20 above shine */}
+        {/* Role pill */}
         <div
           className="absolute bottom-0 inset-x-0 px-4 py-3 z-20
             bg-gradient-to-t from-primary-dark/85 to-transparent"
@@ -72,14 +69,14 @@ function StaffCard({ person }) {
         </div>
       </div>
 
-      {/* ── Text copy ── */}
-      <div className="px-5 py-5 flex flex-col gap-3">
-        <h3 className="font-playfair font-bold text-xl text-text-dark leading-snug
+      {/* ── Text copy — compact on mobile ── */}
+      <div className="px-4 py-4 sm:px-5 sm:py-5 flex flex-col gap-2 sm:gap-3">
+        <h3 className="font-playfair font-bold text-base sm:text-xl text-text-dark leading-snug
           group-hover:text-accent transition-colors duration-300">
           {person.name}
         </h3>
 
-        <p className="font-poppins text-sm text-text-light leading-relaxed">
+        <p className="font-poppins text-xs sm:text-sm text-text-light leading-relaxed">
           {person.desc}
         </p>
 
@@ -94,6 +91,103 @@ function StaffCard({ person }) {
             {person.expertIn}
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Mobile Carousel wrapper ───────────────────────────────────── */
+function MobileCarousel({ items }) {
+  const [current, setCurrent] = useState(0);
+  const total = items.length;
+  const autoRef = useRef(null);
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+  const isDragging = useRef(false);
+
+  const next = useCallback(() => {
+    setCurrent((c) => (c + 1) % total);
+  }, [total]);
+
+  const prev = useCallback(() => {
+    setCurrent((c) => (c - 1 + total) % total);
+  }, [total]);
+
+  /* Auto-advance every 3.5s */
+  useEffect(() => {
+    autoRef.current = setInterval(next, 3500);
+    return () => clearInterval(autoRef.current);
+  }, [next]);
+
+  const resetTimer = useCallback(() => {
+    clearInterval(autoRef.current);
+    autoRef.current = setInterval(next, 3500);
+  }, [next]);
+
+  /* Touch / swipe handlers */
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchStartX.current === null) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartX.current);
+    const dy = Math.abs(e.touches[0].clientY - touchStartY.current);
+    if (dx > dy && dx > 8) isDragging.current = true;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (isDragging.current && Math.abs(diff) > 40) {
+      diff < 0 ? next() : prev();
+      resetTimer();
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+    isDragging.current = false;
+  };
+
+  return (
+    <div className="relative w-full select-none">
+      {/* Slide container */}
+      <div
+        className="overflow-hidden w-full"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {items.map((person) => (
+            <div key={person.id} className="w-full flex-shrink-0 px-2">
+              <StaffCard person={person} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-6">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setCurrent(i); resetTimer(); }}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`
+              btn-base btn-press rounded-full transition-all duration-300
+              hover:scale-110
+              ${i === current
+                ? "w-6 h-2 bg-accent shadow-[0_0_8px_rgba(200,169,110,0.5)]"
+                : "w-2 h-2 bg-border-light hover:bg-accent/50"
+              }
+            `}
+          />
+        ))}
       </div>
     </div>
   );
@@ -117,7 +211,11 @@ export default function OurProfessionals() {
           <div className="w-14 h-[2px] bg-accent mx-auto mt-6" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        {/* Mobile: auto carousel — Desktop: 3-col grid */}
+        <div className="sm:hidden">
+          <MobileCarousel items={STAFF} />
+        </div>
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
           {STAFF.map((person) => (
             <StaffCard key={person.id} person={person} />
           ))}

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState, useCallback } from "react";
+
 /* ─── 6 women-focused expertise entries ─────────────────────────── */
 const EXPERTISE = [
   {
@@ -81,6 +83,102 @@ function ExpertCard({ emoji, title, desc }) {
   );
 }
 
+/* ─── Mobile Carousel for ExpertSection ────────────────────────── */
+function MobileExpertCarousel({ items }) {
+  const [current, setCurrent] = useState(0);
+  const total = items.length;
+  const autoRef = useRef(null);
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+  const isDragging = useRef(false);
+
+  const next = useCallback(() => {
+    setCurrent((c) => (c + 1) % total);
+  }, [total]);
+
+  const prev = useCallback(() => {
+    setCurrent((c) => (c - 1 + total) % total);
+  }, [total]);
+
+  /* Auto-advance every 3s */
+  useEffect(() => {
+    autoRef.current = setInterval(next, 3000);
+    return () => clearInterval(autoRef.current);
+  }, [next]);
+
+  const resetTimer = useCallback(() => {
+    clearInterval(autoRef.current);
+    autoRef.current = setInterval(next, 3000);
+  }, [next]);
+
+  /* Touch handlers */
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchStartX.current === null) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartX.current);
+    const dy = Math.abs(e.touches[0].clientY - touchStartY.current);
+    if (dx > dy && dx > 8) isDragging.current = true;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (isDragging.current && Math.abs(diff) > 40) {
+      diff < 0 ? next() : prev();
+      resetTimer();
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+    isDragging.current = false;
+  };
+
+  return (
+    <div className="relative w-full select-none">
+      <div
+        className="overflow-hidden w-full"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {items.map(({ id, emoji, title, desc }) => (
+            <div key={id} className="w-full flex-shrink-0 px-2">
+              <ExpertCard emoji={emoji} title={title} desc={desc} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-6">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setCurrent(i); resetTimer(); }}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`
+              btn-base btn-press rounded-full transition-all duration-300
+              hover:scale-110
+              ${i === current
+                ? "w-6 h-2 bg-accent shadow-[0_0_8px_rgba(200,169,110,0.5)]"
+                : "w-2 h-2 bg-border-light hover:bg-accent/50"
+              }
+            `}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ─── ExpertSection ─────────────────────────────────────────────── */
 export default function ExpertSection() {
   return (
@@ -99,8 +197,11 @@ export default function ExpertSection() {
           <div className="w-14 h-[2px] bg-accent mx-auto mt-6" />
         </div>
 
-        {/* 3 × 2 grid: 3 col desktop, 2 tablet, 1 mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Mobile: auto carousel — Desktop: 3×2 grid */}
+        <div className="sm:hidden">
+          <MobileExpertCarousel items={EXPERTISE} />
+        </div>
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {EXPERTISE.map(({ id, emoji, title, desc }) => (
             <ExpertCard key={id} emoji={emoji} title={title} desc={desc} />
           ))}
